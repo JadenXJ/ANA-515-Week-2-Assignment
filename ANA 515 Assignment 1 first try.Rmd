@@ -1,0 +1,54 @@
+---
+title: "ANA 515 Assignment 1"
+author: "Jaden Jefferson"
+date: "3/25/2022"
+output: 
+  html_document:
+    theme:
+     bootswatch: slate
+---
+
+```{r setup, include=FALSE}
+
+#install.packages("tidyverse")
+#install.packages("knitr")
+#install.packages("bslib")
+```
+```{r, include=FALSE}
+library(tidyverse)
+library(knitr) ##why do I need to install knitr?
+library(bslib)
+
+url<- "https://raw.githubusercontent.com/fivethirtyeight/guns-data/master/full_data.csv"
+guns<-read.csv(url)
+```
+
+```{r, include=FALSE}
+youth<-subset(guns,age<=65) ##Can I use this alternatively or must i use the example
+```
+
+```{r, include=FALSE}
+summary(youth)
+```
+
+
+We have data about `r nrow(guns)` individuals killed by guns. Only `r nrow(guns) - nrow(youth)` are older than 65. The distribution of the remainder is shown below: 
+
+#gun death by age
+
+```{r youth-dist, echo=FALSE}
+
+youth %>%
+  ggplot(aes(age))+
+  geom_freqpoly(binwidth=1)
+```
+
+#gun death by race
+
+```{r race-dist,echo=FALSE}
+
+youth %>%
+  ggplot(aes(fct_infreq(race)%>%fct_rev()))+
+  geom_bar()+coord_flip()+
+  labs(x="Victim race")
+```
